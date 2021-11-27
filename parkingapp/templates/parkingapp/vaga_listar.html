@@ -1,0 +1,35 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Vagas</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'vaga_inserir' %}">Nova</a></p>
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Vaga</th>
+				<th>Área</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for vaga in pages %}
+			<tr>
+				<td style="width: 25%"><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ vaga.nome_vaga }}</a></td>
+				<td>{{ vaga.fk_área }}</td>
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'vaga_editar' vaga.id_vaga %}">Editar</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'vaga_excluir' vaga.id_vaga %}">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

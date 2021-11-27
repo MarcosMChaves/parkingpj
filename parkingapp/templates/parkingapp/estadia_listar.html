@@ -1,0 +1,189 @@
+{% extends 'parkingapp/base.html' %}
+
+{% load mathfilters %}
+{% load tz %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<form action = "{% url 'estadia_entrada' %}" method="POST">
+    {% csrf_token %}
+	<hr />
+	{% load static %}
+
+	<table class="table table-borderless table-sm text-center">
+		<tbody>
+			<tr>
+				<td></td>
+				<td></td>
+	{% for vaga in vagas %}
+		{% if vaga.fk_área.nome_área == 'N'%}
+				<td><code class="text-primary">{{ vaga }}</code></td>
+		{% endif %}
+	{% endfor %}
+			</tr>
+			<tr>
+				<td></td>
+				<td><img src="{% static 'parkingapp/SM_parking_layout_wc.png' %}" alt="WC" width="115px" height="200px"></td>
+	{% for vaga in livres %}
+		{% if vaga.nome_área == 'N'%}
+			{% if not vaga.data_hora_saída %}
+				{% if not vaga.data_hora_entrada %}
+				<td><img src="{% static 'parkingapp/SM_parking_layout_N.png' %}" alt="" width="85px" height="200px"></td>
+				{% else %}
+				{% if vaga.sigla_porte == 'M' %}
+				<td><img src="{% static 'parkingapp/SM_parking_veículo_MN.png' %}" alt="" width="85px" height="200px"></td>
+				{% else %}
+				<td><img src="{% static 'parkingapp/SM_parking_veículo_PN.png' %}" alt="" width="85px" height="200px"></td>
+				{% endif %}
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+	{% for vaga in livres %}
+		{% if vaga.nome_área == 'N'%}
+			{% if not vaga.data_hora_saída %}
+				{% if not vaga.data_hora_entrada %}
+				<td></td>
+				{% else %}
+				{% if vaga.estadia_gratuita %}
+				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+				{% else %}
+				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+				{% endif %}
+				{% endif %}
+			{% else %}
+				<td></td>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+			</tr>
+			<tr>
+			</tr>
+			<tr>
+				<td></td>
+				{% if not livre %}
+				<td><input type='submit' value='LOTADO!' class="btn btn-danger btn-sm disabled"></td>
+				{% else %}
+				<td>
+				{% if livre|length < livres|length|mul:limite %}
+				<button class="btn btn-success btn-sm position-relative disabled">Entrada 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-warning rounded-pill" data-bs-toggle="tooltip" data-bs-placement="top" title="<{{ limite|mul:100 }}%">{{ livre|length }} vagas!</span></button>
+				</td>
+				{% else %}
+				<button class="btn btn-success btn-sm position-relative disabled">Entrada 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ livre|length }} vagas</span></button>		
+				</td>
+				{% endif %}
+				{% endif %}
+				<td>
+					<select class="form-select form-select-sm d-none" name="chapa">
+					  <option value="0">Selecione...</option>
+	{% for veículo in veículos %}
+		{% if veículo.chapa_veículo == placa %}
+					  <option value="{{veículo.chapa_veículo}}" selected>{{veículo.chapa_veículo}}</option>
+		{% else %}
+					  <option value="{{veículo.chapa_veículo}}">{{veículo.chapa_veículo}}</option>
+		{% endif %}
+	{% endfor %}
+					</select>
+				</td>
+			</tr>
+
+
+
+			<tr>
+				<td></td>
+				<td></td>
+	{% for vaga in livres %}
+		{% if vaga.nome_área == 'S'%}
+			{% if not vaga.data_hora_saída %}
+				{% if not vaga.data_hora_entrada %}
+				<td></td>
+				{% else %}
+				{% if vaga.estadia_gratuita %}
+				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+				{% else %}
+				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+				{% endif %}
+				{% endif %}
+			{% else %}
+				<td></td>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+			</tr>
+			<tr>
+				{% if modelo %}
+				<td><strong>Novo<br />Cliente</strong><br />
+					{% if livre %}
+					{% if placa|slice:"4:5" in DÍGITOS %}
+					<a class="btn btn-outline-dark btn-sm" href="{% url 'veículo_insert' placa modelo %}">{{placa}}</a><br /><code>{{modelo}}</code></td>
+					{% else %}
+					<a class="btn btn-outline-primary btn-sm" href="{% url 'veículo_insert' placa modelo %}">{{placa}}
+					</a><br /><code>{{modelo}}</code></td>
+					{% endif %}
+					{% else %}
+					<a class="btn btn-outline-dark btn-sm disabled" href="{% url 'veículo_insert' placa modelo %}">{{placa}}</a><br /><code>{{modelo}}</code></td>
+					{% endif %}
+				{% else %}
+					{% if placa %}
+					<td><strong>Cliente</strong><br />
+					{% if livre %}
+					<button class="btn btn-outline-success btn-sm">{{placa}} 
+					</button>
+					{% else %}
+					<button class="btn btn-outline-success btn-sm disabled">{{placa}} 
+					</button>
+					{% endif %}
+					</td>
+					{% else %}
+					<td></td>
+					{% endif %}
+				{% endif %}
+				<td><img src="{% static 'parkingapp/SM_parking_layout_office.png' %}" alt="Office" width="115px" height="200px"></td>
+	{% for vaga in livres %}
+		{% if vaga.nome_área == 'S'%}
+			{% if not vaga.data_hora_saída %}
+				{% if not vaga.data_hora_entrada %}
+				<td><img src="{% static 'parkingapp/SM_parking_layout_S.png' %}" alt="" width="85px" height="200px"></td>
+				{% else %}
+				{% if vaga.sigla_porte == 'M' %}
+				<td><img src="{% static 'parkingapp/SM_parking_veículo_MS.png' %}" alt="" width="85px" height="200px"></td>
+				{% else %}
+				<td><img src="{% static 'parkingapp/SM_parking_veículo_PS.png' %}" alt="" width="85px" height="200px"></td>
+				{% endif %}
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+	{% for vaga in vagas %}
+		{% if vaga.fk_área.nome_área == 'S'%}
+				<td><code class="text-primary">{{ vaga }}</code></td>
+		{% endif %}
+	{% endfor %}
+			</tr>
+		</tr>		
+		</tbody>
+	</table>
+
+	</form>
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Áreas</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'área_inserir' %}">Nova</a></p>
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Área</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for área in pages %}
+			<tr>
+				<td><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ área.nome_área }}</a></td>
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'área_editar' área.id_área %}">Editar</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'área_excluir' área.id_área %}">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

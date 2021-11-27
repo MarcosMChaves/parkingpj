@@ -1,0 +1,22 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+<h1>Estacionamento | Inserir</h1>
+
+<form action="" method=POST>
+  {% csrf_token %}
+
+  {{ form.as_p }}
+
+  <input type='submit' value='Salvar' class="btn btn-outline-success btn-sm">
+  <a class="btn btn-outline-warning btn-sm" href="{% url 'estacionamento_listar' %}">Cancelar</a>
+
+</form>
+  {% else %}
+  <center>
+    <br />
+    <h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+  </center>
+  {% endif %}
+{% endblock %}

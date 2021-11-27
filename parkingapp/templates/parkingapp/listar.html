@@ -1,0 +1,26 @@
+<!-- PAGINATION -->
+<nav>
+  <ul class="pagination pagination-sm justify-content-center">
+{% if pages.has_previous %}
+    <li class="page-item">
+		<a class="page-link" href="?page=1">Primeira</a>
+    </li>
+    <li class="page-item">
+		<a class="page-link" href="?page={{ pages.previous_page_number }}">Anterior</a>
+    </li>
+{% endif %}
+
+{% if pages.paginator.num_pages > 1 %}
+    <li class="page-item disabled"><a class="page-link" href="#">{{ pages.number }} / {{ pages.paginator.num_pages }}</a></li>
+{% endif %}
+
+{% if pages.has_next %}
+    <li class="page-item">
+		<a class="page-link" href="?page={{ pages.next_page_number }}">Próxima</a>
+    </li>
+    <li class="page-item">
+		<a class="page-link" href="?page={{ pages.paginator.num_pages }}">Última</a>
+    </li>
+{% endif %}
+  </ul>
+</nav>

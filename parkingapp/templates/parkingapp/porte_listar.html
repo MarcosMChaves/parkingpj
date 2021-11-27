@@ -1,0 +1,37 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Portes</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'porte_inserir' %}">Novo</a></p>
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Porte</th>
+				<th>Sigla</th>
+				<th>Valor Hora</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for porte in pages %}
+			<tr>
+				<td style="width: 25%"><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ porte.nome_porte }}</a></td>
+				<td>{{ porte.sigla_porte }}</td>
+				<td>${{ porte.valor_hora|floatformat:2 }}</td>
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'porte_editar' porte.id_porte %}">Editar</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'porte_excluir' porte.id_porte %}">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

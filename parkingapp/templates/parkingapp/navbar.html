@@ -1,0 +1,52 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">SM Parking</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if user.is_authenticated %}
+        {% if user.is_active %} 
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'estadia_listar' %}">Estadia</a>
+        </li>
+        <li class="nav-item">
+        <li><a class="nav-link" href="{% url 'veículo_listar' %}">Veículos</a></li>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if user.is_authenticated %}
+        {% if user.is_staff %} 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Configuração</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="{% url 'porte_listar' %}">Portes</a></li>
+            <li><a class="dropdown-item" href="{% url 'fabricante_listar' %}">Fabricantes</a></li>
+            <li><a class="dropdown-item" href="{% url 'modelo_listar'%}">Modelos</a></li>
+            {% if user.is_superuser %}
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{% url 'estacionamento_listar' %}">Estacionamento</a></li>
+            <li><a class="dropdown-item" href="{% url 'área_listar' %}">Áreas</a></li>
+            <li><a class="dropdown-item" href="{% url 'vaga_listar' %}">Vagas</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% endif %}
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_login' %}">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+        {% if user.is_authenticated %}
+          <a class="nav-link">Usuário | <strong>{{ user }}</strong></a>
+      {% endif %}
+    </div>
+  </div>
+</nav>

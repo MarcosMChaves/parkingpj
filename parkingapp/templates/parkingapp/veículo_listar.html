@@ -1,0 +1,52 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<form action="{% url 'veículo_pesquisar' %}" method="POST">
+		{% csrf_token %}
+	<h1>Veículos</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'veículo_inserir' %}">Novo</a></p>
+		<div class="input-group mb-3">
+		  <input type="text" class="form-control rounded-pill" placeholder="Digite o filtro desejado... Veículo (Placa) OU Modelo OU Fabricante." aria-label="" aria-describedby="" name="filtro" value={{filtro}}>&nbsp
+		  <button class="btn btn-outline-warning btn-sm rounded-pill" name="filtrar" value="filtro">Filtrar</button>&nbsp
+		  <button class="btn btn-outline-danger btn-sm rounded-pill" name="limpar" value="limpar">Limpar</button>
+		</div>
+
+	<hr />
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Veículo</th>
+				<th>Modelo</th>
+				<th>Fabricante</th>
+				<th>Porte</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for veículo in pages %}
+			<tr>
+				<td style="width: 25%"><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ veículo.chapa_veículo }}</a></td>
+				<td>{{ veículo.fk_modelo.nome_modelo }}</td>
+				<td>{{ veículo.fk_modelo.fk_fabricante.nome_fantasia_fabricante }}</td>
+				<td>{{ veículo.fk_modelo.fk_porte.nome_porte }}</td>
+        {% if user.is_staff %} 
+
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'veículo_editar' veículo.id_veículo %}">Editar</a> 
+					<a class="btn btn-outline-danger btn-sm" href="{% url 'veículo_excluir' veículo.id_veículo %}">Excluir</a></td>
+
+		{% endif %}
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	</form>
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

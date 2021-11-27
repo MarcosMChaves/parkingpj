@@ -1,0 +1,45 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Fabricantes</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'fabricante_inserir' %}">Novo</a></p>
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Fabricante</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for fabricante in pages %}
+			<tr>
+				<td style="width: 25%"><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ fabricante.nome_fantasia_fabricante }}</a> 
+				{% for qtde in qtde_modelos %}
+					{%if qtde.fk_fabricante == fabricante.id_fabricante %}
+						{% if qtde.count > 0 %}
+				<a class="btn btn-outline-primary btn-sm rounded-pill" href="{% url 'modelo_listar' fabricante.id_fabricante %}">					{% if qtde.count > 1 %}
+						{{qtde.count}} modelos
+							{% else %}
+							{{qtde.count}} modelo
+							{% endif%}
+				</a></td>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'fabricante_editar' fabricante.id_fabricante %}">Editar</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'fabricante_excluir' fabricante.id_fabricante %}">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

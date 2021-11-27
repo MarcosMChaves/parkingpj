@@ -1,0 +1,45 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Estacionamento</h1>
+	{% if pages|length < 1 %}
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'estacionamento_inserir' %}">Novo</a></p>
+	{% else %}
+	<p align="right"><a class="btn btn-outline-primary btn-sm disabled" href="{% url 'estacionamento_inserir' %}">Novo</a></p>
+	{% endif %}
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Razão Social</th>
+				<th>Fantasia</th>
+				<th>CNPJ</th>
+				<th>Receita Diária Estimada</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for parking in pages %}
+			<tr>
+				<td><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ parking.razão_social_estacionamento }}</a></td>
+				<td>{{ parking.nome_fantasia_estacionamento }}</td>
+				<td>{{ parking.cnpj_estacionamento }}</td>
+				<td>
+				 	<a class="btn btn-outline-success btn-sm" href="{% url 'receita_listar' %}">${{total_receita.valor_estadia__sum|floatformat:2}}</a></td>
+				<td align="right">
+					 	<a class="btn btn-outline-warning btn-sm" href="{% url 'estacionamento_editar' parking.id_estacionamento %}">Editar</a> <a class="btn btn-outline-danger btn-sm disabled" href="">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

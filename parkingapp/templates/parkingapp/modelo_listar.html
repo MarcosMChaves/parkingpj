@@ -1,0 +1,37 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Modelos</h1>
+	<p align="right"><a class="btn btn-outline-primary btn-sm" href="{% url 'modelo_inserir' %}">Novo</a></p>
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th>Modelo</th>
+				<th>Fabricante</th>
+				<th>Porte</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for modelo in pages %}
+			<tr>
+				<td style="width: 25%"><a class="btn btn-outline-dark btn-sm rounded-pill disabled" href="">{{ modelo.nome_modelo }}</a></td>
+				<td>{{ modelo.fk_fabricante }}</td>
+				<td>{{ modelo.fk_porte }}</td>
+				<td align="right"><a class="btn btn-outline-warning btn-sm" href="{% url 'modelo_editar' modelo.id_modelo %}">Editar</a> <a class="btn btn-outline-danger btn-sm" href="{% url 'modelo_excluir' modelo.id_modelo %}">Excluir</a></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

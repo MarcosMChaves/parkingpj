@@ -1,0 +1,61 @@
+{% extends 'parkingapp/base.html' %}
+
+{% block content %}
+	{% if user.is_authenticated %}
+	<h1>Receita</h1>
+
+	<form action="" method=POST>
+		{% csrf_token %}
+	<p align="right">
+		<label for="de_saída"><strong>Período</strong>&nbsp &nbsp &nbsp De:</label>
+		<input type="date" class="btn btn-outline-info btn-sm rounded-pill" id="de_saída" name="de_saída" value={{de_saída}} min={{mínimo}} max={{máximo}} required>
+
+		<label for="até_saída">Até:</label>
+		<input type="date" class="btn btn-outline-info btn-sm rounded-pill" id="até_saída" name="até_saída" value={{até_saída}} min={{mínimo}} max={{máximo}} required>
+
+		<button class="btn btn-outline-warning btn-sm rounded-pill" name="filtrar" value="filtrar">Filtrar</button> 
+	<hr />
+
+	<table class="table table-borderless table-hover">
+		<thead>
+			<tr>
+				<th></th>
+				<th>Entrada</th>
+				<th>Saída</th>
+				<th></th>
+				<th>Valor</th>
+				<th></th>
+			</tr>
+			<tr>
+				<th></th>
+				<th style="width: 25%"></th>
+				<th style="width: 25%"></th>
+				<th style="width: 10%">TOTAL</th>
+				<th style="width: 10%"class="text-end">${{total_receita.valor_estadia__sum|floatformat:2}}</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for estadia in pages %}	
+			<tr>
+				<td></td>
+				<td>{{ estadia.data_hora_entrada|date:"d/m/Y H:i" }}</td>
+				<td>{{ estadia.data_hora_saída|date:"d/m/Y H:i" }}</td>
+				<td></td>
+				<td class="text-end">${{ estadia.valor_estadia|floatformat:2 }}</td>
+				<td></td>
+			</tr>
+		</tbody>
+		{% endfor %}
+	</table>
+
+	{% include 'parkingapp/listar.html' %}
+	</form>
+	{% else %}
+	<center>
+		<br />
+		<h3>É necessário obter permissão para acessar o conteúdo deste site.</h3>
+	</center>
+	{% endif %}
+
+{% endblock %}

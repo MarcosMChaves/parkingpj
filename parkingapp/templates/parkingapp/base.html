@@ -1,0 +1,57 @@
+<!-- HEADER -->
+<!doctype html>
+<html lang="en">
+{% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% if not user.is_staff %}
+        <meta http-equiv="refresh" content="60">
+      {% endif %} 
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>ParkingApp | SM Parking</title>
+  </head>
+  <body>
+      {% include 'parkingapp/navbar.html' %}
+	<!-- CONTENT -->
+    <div class='container'>
+        <!-- MESSAGES -->
+        {% if messages %}
+          {% for message in messages %}
+          {% if message.tags == 'error' %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message|safe }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% else %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message|safe }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endif %}
+          {% endfor %}
+        {% endif %}
+
+  	{% block content %}
+
+  	{% endblock %}
+    </div>
+
+  </body>
+
+<!-- FOOTER -->
+    <div class='container'>
+    	<br/>
+
+      <footer class="bd-footer text-muted">
+        <small>Copyright &copy; 2021 - {{ current_year }} by Prof. M.Sc. <strong>Marcos</strong> M. <strong>Chaves</strong>, Esp.GPJ.</small>
+        <p align="right"><small><img src="{% static 'parkingapp/PythonPowered.png' %}" alt="Python"><sub>3.10</sub> <img src="{% static 'parkingapp/Django.jpg' %}" alt="Django"><sub>3.2.9</sub> <img src="{% static 'parkingapp/MySQL.jpg' %}" alt="MySQL"><sub>8.0</sub> <img src="{% static 'parkingapp/Bootstrap.png' %}" alt="Bootstrap"><sub>5.1.3</sub></small></p>
+      </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</html>
