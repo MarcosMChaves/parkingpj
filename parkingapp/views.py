@@ -714,7 +714,7 @@ def veículo_excluir(request, veículo_id):
 	return render(request, 'parkingapp/veículo_excluir.html',{'form': form})
 
 #AUTHENTICATION
-def user_login(request):
+def user_login(request, username='manobrista'):
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
@@ -731,7 +731,9 @@ def user_login(request):
 			messages.error(request, ('Erro no login... verifique usuário/senha.'))
 			return redirect('user_login')
 	else:
-		return render(request, 'parkingapp/user_login.html', {})
+		return render(request, 'parkingapp/user_login.html', {
+			'username':username,
+			})
 
 def user_logout(request):
 	logout(request)

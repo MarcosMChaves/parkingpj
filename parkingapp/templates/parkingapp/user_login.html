@@ -7,11 +7,13 @@
 
   <div class="mb-3">
     <label for="username" class="form-label">Usuário</label>
-    <input type="text" class="form-control" name="username" aria-describedby="">
+    <input type="text" class="form-control" name="username" aria-describedby="" value={{username}}>
   </div>
   <div class="mb-3">
     <label for="password" class="form-label">Senha</label>
-    <input type="password" class="form-control" name="password">
+    {% with senha=username|add:'parking' %}
+    <input type="password" class="form-control" name="password" value={{senha}}>
+    {% endwith %}
   </div>
   <button type="submit" class="btn btn-primary">Login</button>
 </form>

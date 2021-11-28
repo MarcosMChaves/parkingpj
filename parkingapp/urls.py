@@ -54,5 +54,6 @@ urlpatterns = [
     path('veículo_editar/<int:veículo_id>', views.veículo_editar, name="veículo_editar"),
     path('veículo_excluir/<int:veículo_id>', views.veículo_excluir, name="veículo_excluir"),
     path('user_login', views.user_login, name="user_login"),
+    path('user_login/<str:username>', views.user_login, name="user_login"),
     path('user_logout', views.user_logout, name="user_logout"),
 ]
