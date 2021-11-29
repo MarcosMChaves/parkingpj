@@ -14,7 +14,7 @@ from pathlib import Path
 
 #HEROKU
 import django_heroku
-import django_databse_url
+import django_database_url
 from decouple import config
 
 
