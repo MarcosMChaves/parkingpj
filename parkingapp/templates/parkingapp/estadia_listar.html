@@ -51,10 +51,18 @@
 				{% else %}
 				{% if vaga.estadia_gratuita %}
 				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
-					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|intdiv:60 }}h
+					{% with x=vaga.duração_estimada|intdiv:60|mul:60 %}
+						{{ vaga.duração_estimada|sub:x }}'
+					{% endwith %}
+				</span></code></a></td>
 				{% else %}
 				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
-					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|intdiv:60 }}h
+					{% with x=vaga.duração_estimada|intdiv:60|mul:60 %}
+						{{ vaga.duração_estimada|sub:x }}'
+					{% endwith %}
+				</span></code></a></td>
 				{% endif %}
 				{% endif %}
 			{% else %}
@@ -108,10 +116,18 @@
 				{% else %}
 				{% if vaga.estadia_gratuita %}
 				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
-					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-success rounded-pill">{{ vaga.duração_estimada|intdiv:60 }}h
+					{% with x=vaga.duração_estimada|intdiv:60|mul:60 %}
+						{{ vaga.duração_estimada|sub:x }}'
+					{% endwith %}
+				</span></code></a></td>
 				{% else %}
 				<td><a class="btn btn-outline-danger btn-sm rounded-pill position-relative" href="{% url 'estadia_saída' vaga.id_estadia %}"><code>{{ vaga.chapa_veículo }} 
-					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|time:"H:i" }} h</span></code></a></td>
+					<span class="position-absolute top-0 start-100 translate-middle badge bg-dark rounded-pill">{{ vaga.duração_estimada|intdiv:60 }}h
+					{% with x=vaga.duração_estimada|intdiv:60|mul:60 %}
+						{{ vaga.duração_estimada|sub:x }}'
+					{% endwith %}
+				</span></code></a></td>
 				{% endif %}
 				{% endif %}
 			{% else %}

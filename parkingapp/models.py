@@ -6,7 +6,8 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from datetime import datetime
+from datetime import datetime, timedelta
+import time
 import random
 
 from .config import LETRAS, DÍGITOS
@@ -258,8 +259,9 @@ class Ocupação(models.Model):
         db_table = 'ocupação'
 
     def estadia_gratuita(self):
- #       t_gratis = datetime.strptime(self.gratuidade, "%H:%M:%S").time()
-        return self.duração_estimada <= self.gratuidade
+        (h, m, s) = f"{self.gratuidade}".split(':')
+        gratuidade = int(h) * 3600 + int(m) * 60 + int(s)
+        return self.duração_estimada <= gratuidade
 
     def __str__(self):
         return self.nome_área + '-' + self.nome_vaga
