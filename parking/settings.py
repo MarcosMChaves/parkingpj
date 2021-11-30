@@ -13,9 +13,9 @@ import os
 from pathlib import Path
 
 #HEROKU
-import django_heroku
-import dj_database_url
-from decouple import config
+#import django_heroku
+#import dj_database_url
+#from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+#    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 SESSION_EXPIRE_SECONDS = 60*15  # 15'
@@ -147,7 +147,7 @@ STATICFILES_DIRS = [
     ]
 
 #HEROKU
-STATICFILES_STORAGE = 'whitenoise.Storage.CompressManifest.StaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.Storage.CompressManifest.StaticFilesStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -155,4 +155,4 @@ STATICFILES_STORAGE = 'whitenoise.Storage.CompressManifest.StaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #HEROKU
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
